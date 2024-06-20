@@ -151,6 +151,24 @@ here
 
 ### check -c copy with input.mkv and output.mp4 as output format get's change how does -c copy work in this case
 
+6. overlay image on top of a video
+
+```
+ffmpeg -i input.mp4 -i image.png -filter_complex "overlay=10:10" output.mp4
+```
+
+```
+ffmpeg -i input.mp4 -i image.png -vf "overlay=10:10" output.mp4
+```
+
+```
+ffmpeg -i input.mp4 -i image.png -filter_complex "overlay=10:10" -preset bottom-right output.mp4
+```
+
+```
+ffmpeg -i input.mp4 -i image.png -filter_complex "[0:v][1:v] overlay=50:50:enable='between(t,0,20)'" -pix_fmt yuv420p -c:a copy output.mp4
+```
+
 # learning resources
 
 https://docs.fileformat.com
