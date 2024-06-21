@@ -18,6 +18,8 @@ ffmpeg -i input.mp4 -map 0 -map 0 -c:a aac -b:v:0 800k -b:v:1 300k -var_stream_m
 ffmpeg -re -i ~/Downloads/SampleVideo_1280x720_1mb.mp4 -map 0 -map 0 -c:a aac -c:v libx264 -b:v:0 800k -b:v:1 300k -s:v:1 320x170 -profile:v:1 baseline -profile:v:0 main -bf 1 -keyint_min 120 -g 120 -sc_threshold 0 -b_strategy 0 -ar:a:1 22050 -use_timeline 1 -use_template 1 -window_size 5 -adaptation_sets "id=0,streams=v id=1,streams=a" -f dash output_manifest.mpd
 ```
 
+6.
+
 # ffmpeg
 
 1. trim specific part of the video
@@ -168,6 +170,44 @@ ffmpeg -i input.mp4 -i image.png -filter_complex "overlay=10:10" -preset bottom-
 ```
 ffmpeg -i input.mp4 -i image.png -filter_complex "[0:v][1:v] overlay=50:50:enable='between(t,0,20)'" -pix_fmt yuv420p -c:a copy output.mp4
 ```
+
+7. Convert video to audio
+
+```
+ffmpeg -i input.mp4 output.mp3
+```
+
+8. Get a thumbnail from a video
+
+```
+ffmpeg -i input.mp4 -ss 00:00:05 -vf "thumbnail, scale=1920:1080" -frames:v 1 thumbnail.png
+```
+
+here
+
+- -ss is seek duration in seconds
+- -frames:v 1 is take the first frame at the seeked duration as there can be multiple frames in one second
+- thumbnail.png is the output file
+
+9. Convert a list of images to gif
+
+```
+ffmpeg -framerate 5 -i image%d.png output.gif
+```
+
+here,
+
+- image%d.png will be a list of images like image1.png, image2.png, image3.png etc. All the images should be in the same directory
+
+10. Enhance Video Encoding Speed: Leveraging NVIDIA GPU in FFmpeg
+
+```
+ffmpeg -i input.mp4 -c:v h264_nvenc -v "scale=1920:1080" -b:v 5M -c:a aac -strict experimental -b:a 192k output.mp4
+```
+
+here,
+
+- encoding used is h264_nvenc which is different from libx264
 
 # learning resources
 
